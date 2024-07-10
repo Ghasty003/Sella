@@ -9,9 +9,10 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IonIcon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
 
-function Login({ navigation }) {
+function Register({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <Image style={styles.logo} source={require("../../assets/market.png")} />
@@ -24,6 +25,17 @@ function Login({ navigation }) {
             cursorColor={colors.primary}
             style={{ width: "80%" }}
             autoCapitalize="none"
+            autoComplete="email"
+          />
+        </View>
+
+        <View style={styles.input}>
+          <IonIcon name="person" size={20} color="gray" />
+          <TextInput
+            placeholder="Enter username"
+            cursorColor={colors.primary}
+            style={{ width: "80%" }}
+            autoCorrect={false}
           />
         </View>
 
@@ -36,19 +48,29 @@ function Login({ navigation }) {
             style={{ width: "80%" }}
           />
         </View>
+
+        <View style={styles.input}>
+          <Icon name="lock" size={20} color="gray" />
+          <TextInput
+            placeholder="Confirm Password"
+            cursorColor={colors.primary}
+            secureTextEntry
+            style={{ width: "80%" }}
+          />
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.loginButton}>
           <Text style={{ color: "white", alignSelf: "center", fontSize: 18 }}>
-            Login
+            Register
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text
             style={{ color: colors.primary, alignSelf: "center", fontSize: 18 }}
           >
-            Register
+            Login
           </Text>
         </TouchableOpacity>
       </View>
@@ -93,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register;
