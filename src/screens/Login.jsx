@@ -39,7 +39,10 @@ function Login({ navigation }) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => navigation.navigate("Hometab")}
+        >
           <Text style={{ color: "white", alignSelf: "center", fontSize: 18 }}>
             Login
           </Text>
