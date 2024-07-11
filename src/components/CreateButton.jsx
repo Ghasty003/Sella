@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     bottom: 22,
     left: "50%",
     transform: [{ translateX: -30 }],
-    padding: 6,
+    padding: 3,
     zIndex: 1,
   },
   container: {
