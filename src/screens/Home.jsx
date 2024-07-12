@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setOpenDetails } from "../redux/slice/state";
 
 function Home() {
   const [refreshing, setRefreshing] = useState(false);
@@ -39,6 +41,12 @@ function Home() {
     }, 2000);
   };
 
+  const dispatch = useDispatch();
+
+  const handleOpen = () => {
+    dispatch(setOpenDetails(true));
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <ScrollView horizontal style={{ marginTop: 20, paddingBottom: 15 }}>
@@ -55,7 +63,11 @@ function Home() {
         style={{ width: "100%" }}
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.container}>
+          <TouchableOpacity
+            style={styles.container}
+            activeOpacity={0.7}
+            onPress={handleOpen}
+          >
             <Image
               style={styles.image}
               source={require("../../assets/couch.jpeg")}

@@ -1,12 +1,16 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableHighlight } from "react-native";
 import { View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "../config/colors";
 
-function CreateButton() {
+function CreateButton({ handleOpen }) {
   return (
-    <View style={styles.parent}>
+    <TouchableHighlight
+      underlayColor="white"
+      style={styles.parent}
+      onPress={handleOpen}
+    >
       <View style={styles.container}>
         <View style={styles.wrapper}>
           <Icon
@@ -17,7 +21,7 @@ function CreateButton() {
           />
         </View>
       </View>
-    </View>
+    </TouchableHighlight>
   );
 }
 

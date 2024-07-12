@@ -9,11 +9,22 @@ import Account from "./src/screens/Account";
 import Icon from "react-native-vector-icons/Ionicons";
 import colors from "./src/config/colors";
 import CreateButton from "./src/components/CreateButton";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ItemDetailsBottomSheet from "./src/components/ItemDetailsBottomSheet";
+import { useRef } from "react";
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeTab() {
+  const ref = useRef(null);
+
+  const handleOpen = () => {
+    ref.current?.open();
+  };
+
   return (
     <>
       <Tab.Navigator
@@ -41,24 +52,29 @@ function HomeTab() {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Account" component={Account} />
       </Tab.Navigator>
-      <CreateButton />
+      <CreateButton handleOpen={handleOpen} />
+      <ItemDetailsBottomSheet ref={ref} />
     </>
   );
 }
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Hometab" component={HomeTab} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <GestureHandlerRootView>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Hometab" component={HomeTab} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }
