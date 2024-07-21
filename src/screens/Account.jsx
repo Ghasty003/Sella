@@ -1,10 +1,17 @@
 import React from "react";
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import colors from "../config/colors";
 
-function Account() {
+function Account({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <View style={styles.profile}>
@@ -20,7 +27,11 @@ function Account() {
         </View>
       </View>
 
-      <View style={styles.listing}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate("MyListings")}
+        style={styles.listing}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -40,7 +51,7 @@ function Account() {
           <Text style={{ fontSize: 18, fontWeight: "500" }}>My Listings</Text>
         </View>
         <Icon name="chevron-right" size={25} style={{ alignSelf: "center" }} />
-      </View>
+      </TouchableOpacity>
 
       <View style={[styles.listing, { marginTop: 3 }]}>
         <View

@@ -15,6 +15,7 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
 import CreateItemBottomSheet from "./src/components/CreateItemBottomSheet";
+import MyListings from "./src/screens/MyListings";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,14 @@ function AccountScreen() {
         component={Account}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MyListings"
+        component={MyListings}
+        options={{
+          title: "My Listings",
+          headerBackTitle: "Account",
         }}
       />
     </Stack.Navigator>
