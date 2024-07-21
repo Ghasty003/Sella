@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -15,17 +15,18 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  runOnJS,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Modal } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenDetails } from "../redux/slice/state";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("screen");
 
-function ItemDetailsBottomSheet({}, ref) {
+function ItemDetailsBottomSheet({}) {
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
+
+  const dispatch = useDispatch();
 
   const handleCloseBottomSheet = () => {
     "worklet";
@@ -42,18 +43,9 @@ function ItemDetailsBottomSheet({}, ref) {
   useEffect(() => {
     if (openDetails) {
       open();
+      dispatch(setOpenDetails(false));
     }
   }, [openDetails]);
-
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        open,
-      };
-    },
-    []
-  );
 
   const pan = Gesture.Pan()
     .onBegin(() => {
@@ -183,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.forwardRef(ItemDetailsBottomSheet);
+export default ItemDetailsBottomSheet;

@@ -14,6 +14,7 @@ import ItemDetailsBottomSheet from "./src/components/ItemDetailsBottomSheet";
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
+import CreateItemBottomSheet from "./src/components/CreateItemBottomSheet";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,7 +54,8 @@ function HomeTab() {
         <Tab.Screen name="Account" component={Account} />
       </Tab.Navigator>
       <CreateButton handleOpen={handleOpen} />
-      <ItemDetailsBottomSheet ref={ref} />
+      <ItemDetailsBottomSheet />
+      <CreateItemBottomSheet ref={ref} />
     </>
   );
 }
