@@ -19,6 +19,20 @@ import CreateItemBottomSheet from "./src/components/CreateItemBottomSheet";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function AccountScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Index"
+        component={Account}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function HomeTab() {
   const ref = useRef(null);
 
@@ -51,7 +65,7 @@ function HomeTab() {
         })}
       >
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Account" component={Account} />
+        <Tab.Screen name="Account" component={AccountScreen} />
       </Tab.Navigator>
       <CreateButton handleOpen={handleOpen} />
       <ItemDetailsBottomSheet />
