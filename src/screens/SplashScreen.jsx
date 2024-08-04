@@ -2,9 +2,25 @@ import { Button, Image, SafeAreaView, StyleSheet } from "react-native";
 import * as ProgressBar from "react-native-progress";
 import colors from "../config/colors";
 import { useEffect, useState } from "react";
+import { getToken } from "../config/token";
+import * as SecureStore from "expo-secure-store";
 
 function SplashScreen({ navigation }) {
   const [progress, setProgress] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getToken();
+        console.log("token here ====", token);
+        if (token) setIsAuthenticated(true);
+      } catch (error) {
+        // console.log(error);
+        // alert(error.message);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -18,7 +34,8 @@ function SplashScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (progress >= 1) navigation.navigate("Login");
+    if (progress >= 1 && !isAuthenticated) return navigation.navigate("Login");
+    if (progress >= 1 && isAuthenticated) navigation.navigate("Hometab");
   }, [progress]);
 
   return (
@@ -33,7 +50,10 @@ function SplashScreen({ navigation }) {
         color={colors.primary}
         style={styles.progress}
       />
-      {/* <Button title="Click" onPress={() => navigation.navigate("Login")} /> */}
+      {/* <Button
+        title="Click"
+        onPress={async () => await SecureStore.deleteItemAsync("@auth_token")}
+      /> */}
     </SafeAreaView>
   );
 }

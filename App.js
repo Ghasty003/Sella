@@ -11,11 +11,12 @@ import colors from "./src/config/colors";
 import CreateButton from "./src/components/CreateButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ItemDetailsBottomSheet from "./src/components/ItemDetailsBottomSheet";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
 import CreateItemBottomSheet from "./src/components/CreateItemBottomSheet";
 import MyListings from "./src/screens/MyListings";
+import { getToken } from "./src/config/token";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -84,6 +85,20 @@ function HomeTab() {
 }
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getToken();
+        if (token) setIsAuthenticated(true);
+      } catch (error) {
+        // console.log(error);
+        // alert(error.message);
+      }
+    })();
+  }, []);
+
   return (
     <Provider store={store}>
       <GestureHandlerRootView>
@@ -93,10 +108,19 @@ export default function App() {
               headerShown: false,
             }}
           >
-            <Stack.Screen name="SplashScreen" component={SplashScreen} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="Hometab" component={HomeTab} />
+            {!isAuthenticated ? (
+              <Stack.Group>
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Register" component={Register} />
+              </Stack.Group>
+            ) : (
+              <Stack.Group>
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Hometab" component={HomeTab} />
+              </Stack.Group>
+            )}
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -10,8 +10,25 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../config/colors";
+import useAuth from "../hooks/useAuth";
 
 function Login({ navigation }) {
+  const { login } = useAuth();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleLogin = async () => {
+    try {
+      await login(formData);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+    // navigation.navigate("Hometab")
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <Image style={styles.logo} source={require("../../assets/market.png")} />
@@ -24,6 +41,9 @@ function Login({ navigation }) {
             cursorColor={colors.primary}
             style={{ width: "80%" }}
             autoCapitalize="none"
+            onChangeText={(value) => {
+              setFormData((prevData) => ({ ...prevData, email: value }));
+            }}
           />
         </View>
 
@@ -34,15 +54,15 @@ function Login({ navigation }) {
             cursorColor={colors.primary}
             secureTextEntry
             style={{ width: "80%" }}
+            onChangeText={(value) => {
+              setFormData((prevData) => ({ ...prevData, password: value }));
+            }}
           />
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => navigation.navigate("Hometab")}
-        >
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={{ color: "white", alignSelf: "center", fontSize: 18 }}>
             Login
           </Text>

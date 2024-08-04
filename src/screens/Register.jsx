@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,8 +11,37 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
+import useAuth from "../hooks/useAuth";
 
 function Register({ navigation }) {
+  const { signup } = useAuth();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleRegister = async () => {
+    // check if password and confirm password match
+    const isPasswordMatch = !!(
+      formData.password.length && formData.password === formData.confirmPassword
+    );
+
+    // throw error if password does not match
+
+    if (!isPasswordMatch)
+      return alert("Password and Confirm password does not match");
+
+    try {
+      await signup(formData);
+      navigation.navigate("Login");
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <Image style={styles.logo} source={require("../../assets/market.png")} />
@@ -26,6 +55,9 @@ function Register({ navigation }) {
             style={{ width: "80%" }}
             autoCapitalize="none"
             autoComplete="email"
+            onChangeText={(value) => {
+              setFormData((prevData) => ({ ...prevData, email: value }));
+            }}
           />
         </View>
 
@@ -36,6 +68,9 @@ function Register({ navigation }) {
             cursorColor={colors.primary}
             style={{ width: "80%" }}
             autoCorrect={false}
+            onChangeText={(value) => {
+              setFormData((prevData) => ({ ...prevData, username: value }));
+            }}
           />
         </View>
 
@@ -46,6 +81,9 @@ function Register({ navigation }) {
             cursorColor={colors.primary}
             secureTextEntry
             style={{ width: "80%" }}
+            onChangeText={(value) => {
+              setFormData((prevData) => ({ ...prevData, password: value }));
+            }}
           />
         </View>
 
@@ -56,12 +94,18 @@ function Register({ navigation }) {
             cursorColor={colors.primary}
             secureTextEntry
             style={{ width: "80%" }}
+            onChangeText={(value) => {
+              setFormData((prevData) => ({
+                ...prevData,
+                confirmPassword: value,
+              }));
+            }}
           />
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity onPress={handleRegister} style={styles.loginButton}>
           <Text style={{ color: "white", alignSelf: "center", fontSize: 18 }}>
             Register
           </Text>
